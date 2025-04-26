@@ -99,6 +99,35 @@ function resetSelection() {
   closeBtn.style.display = 'none';
 }
 
+function generateCards() {
+  const totalCards = 17;
+  for (let i = 1; i <= totalCards; i++) {
+    const formattedNum = String(i).padStart(2, '0'); // Format as 01, 02...
+    const imgSrc = `NatGeo${formattedNum}.jpg`;
+
+    const card = document.createElement('div');
+    card.classList.add('card');
+
+    const inner = document.createElement('div');
+    inner.classList.add('card-inner');
+
+    const front = document.createElement('div');
+    front.classList.add('card-front');
+    front.style.backgroundImage = `url(${imgSrc})`;
+
+    const back = document.createElement('div');
+    back.classList.add('card-back');
+    back.innerHTML = `<h3>NatGeo ${formattedNum}</h3><p>More info about NatGeo ${formattedNum}</p>`;
+
+    inner.appendChild(front);
+    inner.appendChild(back);
+    card.appendChild(inner);
+
+    card.addEventListener('click', () => selectCard(card));
+    cardContainer.appendChild(card);
+  }
+}
+
 closeBtn.addEventListener('click', () => {
   resetSelection();
   toggleView(true);

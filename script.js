@@ -36,9 +36,7 @@ function generateCards() {
 function applyAngledStyles() {
   const cards = document.querySelectorAll('.card');
   cards.forEach(card => {
-    const rotation = (Math.random() * 10 - 5).toFixed(2); // -5deg to +5deg
     const stagger = (Math.random() * 20 - 10).toFixed(2); // -10px to +10px
-    card.style.setProperty('--rotation', `${rotation}deg`);
     card.style.setProperty('--stagger', `${stagger}px`);
   });
 }

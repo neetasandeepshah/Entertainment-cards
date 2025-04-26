@@ -4,42 +4,81 @@ const closeBtn = document.getElementById('closeBtn');
 
 const TOTAL_MAIN_CARDS = 100;
 const IMAGES_COUNT = 17;
+const FILLER_COLUMNS = 2; // 2 on each side
 
-// Generate 100 main cards (repeat images), plus fillers for angled view
 function generateCards() {
-  for (let i = 1; i <= TOTAL_MAIN_CARDS; i++) {
-    const formattedNum = String(((i - 1) % IMAGES_COUNT) + 1).padStart(2, '0');
-    const imgSrc = `NatGeo${formattedNum}.jpg`;
+  const cardsPerRow = Math.floor(window.innerWidth / 216); // 200px + 16px gap
+  const totalRows = Math.ceil(TOTAL_MAIN_CARDS / cardsPerRow);
 
-    const card = document.createElement('div');
-    card.classList.add('card');
+  let cardIndex = 1;
 
-    const inner = document.createElement('div');
-    inner.classList.add('card-inner');
+  for (let row = 0; row < totalRows; row++) {
+    // Add fillers to the left
+    for (let f = 0; f < FILLER_COLUMNS; f++) {
+      const filler = createFillerCard((f + row) % IMAGES_COUNT + 1);
+      cardContainer.appendChild(filler);
+    }
 
-    const front = document.createElement('div');
-    front.classList.add('card-front');
-    front.style.backgroundImage = `url(${imgSrc})`;
+    // Main cards for this row
+    for (let col = 0; col < cardsPerRow; col++) {
+      if (cardIndex > TOTAL_MAIN_CARDS) break;
 
-    const label = document.createElement('div');
-    label.classList.add('label');
-    label.textContent = `Card ${i}`;
+      const formattedNum = String(((cardIndex - 1) % IMAGES_COUNT) + 1).padStart(2, '0');
+      const imgSrc = `NatGeo${formattedNum}.jpg`;
 
-    const back = document.createElement('div');
-    back.classList.add('card-back');
-    back.innerHTML = `<h3>NatGeo ${formattedNum}</h3><p>More info about Card ${i}</p>`;
+      const card = document.createElement('div');
+      card.classList.add('card');
 
-    inner.appendChild(front);
-    inner.appendChild(back);
-    card.appendChild(inner);
-    card.appendChild(label);
+      const inner = document.createElement('div');
+      inner.classList.add('card-inner');
 
-    card.addEventListener('click', () => selectCard(card));
-    cardContainer.appendChild(card);
+      const front = document.createElement('div');
+      front.classList.add('card-front');
+      front.style.backgroundImage = `url(${imgSrc})`;
+
+      const label = document.createElement('div');
+      label.classList.add('label');
+      label.textContent = `Card ${cardIndex}`;
+
+      const back = document.createElement('div');
+      back.classList.add('card-back');
+      back.innerHTML = `<h3>NatGeo ${formattedNum}</h3><p>More info about Card ${cardIndex}</p>`;
+
+      inner.appendChild(front);
+      inner.appendChild(back);
+      card.appendChild(inner);
+      card.appendChild(label);
+
+      card.addEventListener('click', () => selectCard(card));
+      cardContainer.appendChild(card);
+
+      cardIndex++;
+    }
+
+    // Add fillers to the right
+    for (let f = 0; f < FILLER_COLUMNS; f++) {
+      const filler = createFillerCard((f + row + FILLER_COLUMNS) % IMAGES_COUNT + 1);
+      cardContainer.appendChild(filler);
+    }
   }
 }
 
-// Toggle view between angled and flat
+function createFillerCard(imgIndex) {
+  const formattedNum = String(imgIndex).padStart(2, '0');
+  const imgSrc = `NatGeo${formattedNum}.jpg`;
+
+  const filler = document.createElement('div');
+  filler.classList.add('card', 'filler');
+
+  const front = document.createElement('div');
+  front.classList.add('card-front');
+  front.style.backgroundImage = `url(${imgSrc})`;
+
+  filler.appendChild(front);
+  return filler;
+}
+
+// Toggle between views
 viewToggle.addEventListener('change', () => {
   resetSelection();
   toggleView(viewToggle.checked);
@@ -71,7 +110,7 @@ function selectCard(card) {
   card.scrollIntoView({ behavior: 'smooth', inline: 'center' });
   closeBtn.style.display = 'block';
 
-  const cards = document.querySelectorAll('.card');
+  const cards = document.querySelectorAll('.card:not(.filler)');
   cards.forEach((c, index) => {
     if (c !== card) {
       c.classList.add('fly-in');

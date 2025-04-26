@@ -55,13 +55,32 @@ input:checked + .slider:before {
 }
 
 .card-container {
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 50px;
+}
+
+/* Angled Grid View */
+.card-container.angled {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 30px;
+  justify-items: center;
+  align-items: center;
+}
+
+/* Apply rotation and stagger */
+.card-container.angled .card {
+  transform: rotateZ(var(--rotation)) translateY(var(--stagger));
+  transition: transform 0.5s;
+}
+
+/* Flat Horizontal Scroll View */
+.card-container.flat {
   display: flex;
   align-items: center;
-  height: 100vh;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 50px;
-  box-sizing: border-box;
 }
 
 .card {
@@ -104,10 +123,12 @@ input:checked + .slider:before {
   transform: rotateY(180deg);
 }
 
+/* Flip effect */
 .card.selected.flipped .card-inner {
   transform: rotateY(180deg);
 }
 
+/* Selected card enlargement */
 .card.selected {
   transform: scale(1.2) rotateY(0deg) !important;
   transition: transform 0.5s;
@@ -124,12 +145,6 @@ input:checked + .slider:before {
   opacity: 0;
   transform: translateX(100px);
   animation: flyIn 0.5s forwards;
-}
-
-/* Angled view effect */
-.card-container.angled .card {
-  transform: rotateY(25deg);
-  transition: transform 0.5s;
 }
 
 @keyframes flyIn {

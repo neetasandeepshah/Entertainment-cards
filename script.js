@@ -4,11 +4,7 @@ const closeBtn = document.getElementById('closeBtn');
 
 function generateCards() {
   const cards = [
-    { img: 'https://via.placeholder.com/200x300?text=Card+1', title: 'Card 1', description: 'More info about Card 1' },
-    { img: 'https://via.placeholder.com/200x300?text=Card+2', title: 'Card 2', description: 'More info about Card 2' },
-    { img: 'https://via.placeholder.com/200x300?text=Card+3', title: 'Card 3', description: 'More info about Card 3' },
-    { img: 'https://via.placeholder.com/200x300?text=Card+4', title: 'Card 4', description: 'More info about Card 4' },
-    { img: 'https://via.placeholder.com/200x300?text=Card+5', title: 'Card 5', description: 'More info about Card 5' },
+
   ];
 
   cards.forEach(data => {

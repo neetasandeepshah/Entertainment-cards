@@ -7,6 +7,13 @@ body {
   overflow: hidden;
 }
 
+.viewport {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
 .toggle-container {
   position: absolute;
   top: 20px;
@@ -54,42 +61,47 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
+/* Card Container */
 .card-container {
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   box-sizing: border-box;
-  padding: 50px;
-}
-
-/* Angled Grid View */
-.card-container.angled {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-gap: 16px; /* consistent gap */
+  grid-gap: 16px;
   justify-items: center;
   align-items: center;
-}
-
-/* Consistent rotation and staggered vertical position */
-.card-container.angled .card {
-  transform: rotateZ(10deg) translateY(var(--stagger));
   transition: transform 0.5s;
 }
 
-/* Flat Horizontal Scroll View */
-.card-container.flat {
-  display: flex;
-  align-items: center;
-  overflow-x: auto;
-  overflow-y: hidden;
+/* Rotate entire container in angled view */
+.card-container.angled {
+  transform: rotateZ(10deg);
 }
 
+/* Flat view (no rotation, horizontal scroll) */
+.card-container.flat {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  transform: rotateZ(0deg);
+}
+
+/* Card Styles */
 .card {
   min-width: 200px;
   height: 300px;
-  margin: 0 20px;
   perspective: 1000px;
+  transition: transform 0.5s;
 }
 
+/* Filler Cards */
+.card.filler {
+  background-color: #444;
+  pointer-events: none;
+}
+
+/* Front & Back faces */
 .card-inner {
   width: 100%;
   height: 100%;
@@ -140,7 +152,7 @@ input:checked + .slider:before {
   transition: transform 0.5s ease-in-out;
 }
 
-/* Fly-in animation for other cards */
+/* Fly-in animation for flat view */
 .card.fly-in {
   opacity: 0;
   transform: translateX(100px);

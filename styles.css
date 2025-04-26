@@ -73,12 +73,12 @@ input:checked + .slider:before {
   transition: transform 0.5s;
 }
 
-/* Rotate entire container in angled view */
+/* Rotate container in angled view */
 .card-container.angled {
   transform: rotateZ(10deg);
 }
 
-/* Flat view (no rotation, horizontal scroll) */
+/* Flat view */
 .card-container.flat {
   display: flex;
   overflow-x: auto;
@@ -86,18 +86,12 @@ input:checked + .slider:before {
   transform: rotateZ(0deg);
 }
 
-/* Card Styles */
 .card {
   min-width: 200px;
   height: 300px;
   perspective: 1000px;
   transition: transform 0.5s;
   position: relative;
-}
-
-/* Filler Cards */
-.card.filler {
-  pointer-events: none;
 }
 
 /* Overlay label */
@@ -112,7 +106,6 @@ input:checked + .slider:before {
   border-radius: 4px;
 }
 
-/* Front & Back faces */
 .card-inner {
   width: 100%;
   height: 100%;
@@ -151,19 +144,16 @@ input:checked + .slider:before {
   transform: rotateY(180deg);
 }
 
-/* Selected card enlargement */
 .card.selected {
   transform: scale(1.2) rotateY(0deg) !important;
   transition: transform 0.5s;
 }
 
-/* Raise & straighten selected card */
 .card.transitioning.selected {
   transform: scale(1.4) rotateY(0deg) translateY(-20px);
   transition: transform 0.5s ease-in-out;
 }
 
-/* Fly-in animation for flat view */
 .card.fly-in {
   opacity: 0;
   transform: translateX(100px);

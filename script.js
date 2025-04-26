@@ -73,10 +73,31 @@ function selectCard(card) {
   }
 }
 
-function flipCard(event) {
-  event.stopPropagation();
-  const card = event.currentTarget;
-  card.classList.toggle('flipped');
+function selectCard(card) {
+  if (card.classList.contains('selected')) {
+    // If already selected, flip it
+    card.classList.toggle('flipped');
+    return;
+  }
+
+  toggleView(false); // Switch to flat view
+  resetSelection();
+
+  card.classList.add('selected', 'transitioning');
+  card.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+  closeBtn.style.display = 'block';
+
+  const cards = document.querySelectorAll('.card');
+  cards.forEach((c, index) => {
+    if (c !== card) {
+      c.classList.add('fly-in');
+      c.style.animationDelay = `${index * 0.05}s`;
+    }
+  });
+
+  setTimeout(() => {
+    card.classList.remove('transitioning');
+  }, 500);
 }
 
 function resetSelection() {

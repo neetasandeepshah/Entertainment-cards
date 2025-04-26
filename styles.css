@@ -97,7 +97,6 @@ input:checked + .slider:before {
 
 /* Filler Cards */
 .card.filler {
-  background-color: #444;
   pointer-events: none;
 }
 

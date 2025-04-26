@@ -64,14 +64,14 @@ input:checked + .slider:before {
 .card-container.angled {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-gap: 30px;
+  grid-gap: 16px; /* consistent gap */
   justify-items: center;
   align-items: center;
 }
 
-/* Apply rotation and stagger */
+/* Consistent rotation and staggered vertical position */
 .card-container.angled .card {
-  transform: rotateZ(var(--rotation)) translateY(var(--stagger));
+  transform: rotateZ(10deg) translateY(var(--stagger));
   transition: transform 0.5s;
 }
 

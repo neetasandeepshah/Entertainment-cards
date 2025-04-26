@@ -10,12 +10,12 @@ body {
 .viewport {
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
   position: relative;
 }
 
 .toggle-container {
-  position: absolute;
+  position: fixed;
   top: 20px;
   left: 20px;
   display: flex;
@@ -61,16 +61,15 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Card Container */
 .card-container {
   width: 100%;
-  height: 100%;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-gap: 16px;
   justify-items: center;
   align-items: center;
+  padding: 50px;
   transition: transform 0.5s;
 }
 
@@ -93,12 +92,25 @@ input:checked + .slider:before {
   height: 300px;
   perspective: 1000px;
   transition: transform 0.5s;
+  position: relative;
 }
 
 /* Filler Cards */
 .card.filler {
   background-color: #444;
   pointer-events: none;
+}
+
+/* Overlay label */
+.card .label {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 4px;
 }
 
 /* Front & Back faces */
@@ -167,7 +179,7 @@ input:checked + .slider:before {
 }
 
 .close-btn {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
   background: rgba(0,0,0,0.7);

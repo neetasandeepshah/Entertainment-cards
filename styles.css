@@ -126,6 +126,12 @@ input:checked + .slider:before {
   animation: flyIn 0.5s forwards;
 }
 
+/* Angled view effect */
+.card-container.angled .card {
+  transform: rotateY(25deg);
+  transition: transform 0.5s;
+}
+
 @keyframes flyIn {
   to {
     opacity: 1;

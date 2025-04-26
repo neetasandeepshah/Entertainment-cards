@@ -2,46 +2,59 @@ const cardContainer = document.getElementById('cardContainer');
 const viewToggle = document.getElementById('viewToggle');
 const closeBtn = document.getElementById('closeBtn');
 
-// Generate cards for NatGeo01.jpg to NatGeo17.jpg
-function generateCards() {
-  const totalCards = 17;
-  for (let i = 1; i <= totalCards; i++) {
-    const formattedNum = String(i).padStart(2, '0');
-    const imgSrc = `NatGeo${formattedNum}.jpg`;
+const ROWS = 5;
+const COLS = 6;
+const TOTAL_MAIN_CARDS = 17;
 
+// Generate filler cards around main cards
+function generateCards() {
+  const totalCells = ROWS * COLS;
+  let cardIndex = 1;
+
+  for (let i = 0; i < totalCells; i++) {
     const card = document.createElement('div');
     card.classList.add('card');
 
-    const inner = document.createElement('div');
-    inner.classList.add('card-inner');
+    if (isFiller(i)) {
+      card.classList.add('filler');
+    } else if (cardIndex <= TOTAL_MAIN_CARDS) {
+      const formattedNum = String(cardIndex).padStart(2, '0');
+      const imgSrc = `NatGeo${formattedNum}.jpg`;
 
-    const front = document.createElement('div');
-    front.classList.add('card-front');
-    front.style.backgroundImage = `url(${imgSrc})`;
+      const inner = document.createElement('div');
+      inner.classList.add('card-inner');
 
-    const back = document.createElement('div');
-    back.classList.add('card-back');
-    back.innerHTML = `<h3>NatGeo ${formattedNum}</h3><p>More info about NatGeo ${formattedNum}</p>`;
+      const front = document.createElement('div');
+      front.classList.add('card-front');
+      front.style.backgroundImage = `url(${imgSrc})`;
 
-    inner.appendChild(front);
-    inner.appendChild(back);
-    card.appendChild(inner);
+      const back = document.createElement('div');
+      back.classList.add('card-back');
+      back.innerHTML = `<h3>NatGeo ${formattedNum}</h3><p>More info about NatGeo ${formattedNum}</p>`;
 
-    card.addEventListener('click', () => selectCard(card));
+      inner.appendChild(front);
+      inner.appendChild(back);
+      card.appendChild(inner);
+
+      card.addEventListener('click', () => selectCard(card));
+      cardIndex++;
+    } else {
+      card.classList.add('filler');
+    }
+
     cardContainer.appendChild(card);
   }
 }
 
-// Apply staggered rotation and vertical offset for angled view
-function applyAngledStyles() {
-  const cards = document.querySelectorAll('.card');
-  cards.forEach(card => {
-    const stagger = (Math.random() * 20 - 10).toFixed(2); // -10px to +10px
-    card.style.setProperty('--stagger', `${stagger}px`);
-  });
+// Define filler cells (outer rows and columns)
+function isFiller(index) {
+  const row = Math.floor(index / COLS);
+  const col = index % COLS;
+
+  return row === 0 || row === ROWS - 1 || col === 0 || col === COLS - 1;
 }
 
-// Toggle between angled and flat view
+// Toggle view between angled and flat
 viewToggle.addEventListener('change', () => {
   resetSelection();
   toggleView(viewToggle.checked);
@@ -51,11 +64,20 @@ function toggleView(isAngled) {
   if (isAngled) {
     cardContainer.classList.remove('flat');
     cardContainer.classList.add('angled');
-    applyAngledStyles();
+    showFillers(true);
   } else {
     cardContainer.classList.remove('angled');
     cardContainer.classList.add('flat');
+    showFillers(false);
   }
+}
+
+// Show or hide filler cards
+function showFillers(show) {
+  const fillers = document.querySelectorAll('.card.filler');
+  fillers.forEach(f => {
+    f.style.display = show ? 'block' : 'none';
+  });
 }
 
 // Card selection and flip logic
@@ -72,7 +94,7 @@ function selectCard(card) {
   card.scrollIntoView({ behavior: 'smooth', inline: 'center' });
   closeBtn.style.display = 'block';
 
-  const cards = document.querySelectorAll('.card');
+  const cards = document.querySelectorAll('.card:not(.filler)');
   cards.forEach((c, index) => {
     if (c !== card) {
       c.classList.add('fly-in');
@@ -85,15 +107,15 @@ function selectCard(card) {
   }, 500);
 }
 
-// Reset card selection and animations
+// Reset selection and animations
 function resetSelection() {
   const selected = document.querySelector('.card.selected');
   if (selected) {
     selected.classList.remove('selected', 'flipped');
   }
 
-  const allCards = document.querySelectorAll('.card');
-  allCards.forEach(c => {
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(c => {
     c.classList.remove('fly-in');
     c.style.animationDelay = '';
   });
@@ -110,4 +132,3 @@ closeBtn.addEventListener('click', () => {
 
 // Initialize
 generateCards();
-applyAngledStyles();
